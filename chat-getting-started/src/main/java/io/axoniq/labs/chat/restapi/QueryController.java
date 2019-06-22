@@ -1,7 +1,9 @@
 package io.axoniq.labs.chat.restapi;
 
+import io.axoniq.labs.chat.coreapi.AllRoomsQuery;
 import io.axoniq.labs.chat.query.rooms.messages.ChatMessage;
 import io.axoniq.labs.chat.query.rooms.summary.RoomSummary;
+import org.axonframework.messaging.responsetypes.MultipleInstancesResponseType;
 import org.axonframework.queryhandling.QueryGateway;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +23,9 @@ public class QueryController {
         this.gateway = gateway;
     }
 
-    @GetMapping("rooms")
+    @GetMapping("/rooms")
     public Future<List<RoomSummary>> listRooms() {
-        // TODO: Send a query for this API call
-        throw new UnsupportedOperationException("Not implemented yet");
+        return gateway.query(new AllRoomsQuery(), new MultipleInstancesResponseType<>(RoomSummary.class));
     }
 
     @GetMapping("/rooms/{roomId}/participants")
